@@ -16,6 +16,13 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, re_path
 
+from accounts.views import (
+    login_view,
+    logout_view,
+    register_view,
+)
+
+
 from products.views import (
     # bad_view,
     product_create_view,
@@ -27,6 +34,9 @@ from products.views import (
 
 urlpatterns = [
     path('search/', search_view),
+    path('login/', login_view),
+    path('logout/', logout_view),
+    path('register/', register_view),
     #path('bad-view-dont-use/', bad_view),
     path('products/<int:pk>/', product_detail_view),
     path('products/', product_list_views),

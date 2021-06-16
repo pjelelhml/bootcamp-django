@@ -40,6 +40,7 @@ INSTALLED_APPS = [
 
     'products',
     'profiles',
+    'emails',
 ]
 
 MIDDLEWARE = [
@@ -102,6 +103,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGIN_URL = "/login"
+LOGIN_REDIRECT_URL = "/"
 
 
 # Internationalization
