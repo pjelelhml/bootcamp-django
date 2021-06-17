@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login as login, logout, get_user_model
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.shortcuts import render, redirect
 
 # Create your views here.
@@ -8,7 +8,7 @@ User = get_user_model()
 
 
 def register_view(request):
-    form = LoginForm(request.POST or None)
+    form = RegisterForm(request.POST or None)
     if form.is_valid():
         username = form.cleaned_data.get("username")
         email = form.cleaned_data.get("email")
@@ -18,12 +18,11 @@ def register_view(request):
             user = User.objects.create_user(username, email, password)
         except:
             user = None
-
         if user != None:
             login(request, user)
             return redirect("/")
         else:
-            request.session['register_error'] = 1
+            request.session['register_error'] = 1  # 1 == True
     return render(request, "forms.html", {"form": form})
 
 

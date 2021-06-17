@@ -51,7 +51,7 @@ def product_create_view(request, *args, **kwargs):
     if form.is_valid():
         obj = form.save(commit=False)
         # do some stuff
-        # obj.user = request.user
+        obj.user = request.user
         obj.save()
 
         # print(form.cleaned_data)
