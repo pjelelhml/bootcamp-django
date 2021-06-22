@@ -22,6 +22,8 @@ from accounts.views import (
     register_view,
 )
 
+from orders.views import order_checkout_view
+
 
 from products.views import (
     # bad_view,
@@ -29,11 +31,14 @@ from products.views import (
     product_detail_view,
     product_api_detail_view,
     search_view,
-    product_list_views
+    product_list_views,
 )
 
 urlpatterns = [
     path('search/', search_view),
+    path('', TemplateView, as_view
+         (template_name='base.html')),
+    path('checkout/', order_checkout_view),
     path('login/', login_view),
     path('logout/', logout_view),
     path('register/', register_view),
