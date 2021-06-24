@@ -24,6 +24,8 @@ from accounts.views import (
 
 from orders.views import order_checkout_view
 
+from django.views.generic import TemplateView
+
 
 from products.views import (
     # bad_view,
@@ -36,7 +38,7 @@ from products.views import (
 
 urlpatterns = [
     path('search/', search_view),
-    path('', TemplateView, as_view
+    path('', TemplateView.as_view
          (template_name='base.html')),
     path('checkout/', order_checkout_view),
     path('login/', login_view),
