@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html>
 
@@ -9,9 +10,12 @@
         color: red;
     }
 </style>
+{% block head %}{% endblock %}
+<link rel="stylesheet" href="/static/css/main.css" />
 
 <body>
     {% block content %}
+    <h1>Hello World</h1>
     {% endblock %}
 
 
