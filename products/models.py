@@ -10,6 +10,7 @@ class Product(models.Model):
     # id = models.AutoField()
     user = models.ForeignKey(User, null=True, on_delete=models.SET_NULL)
     # user = models.ForeignKey(User, null=True, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='products/', null=True, blank=True)
     title = models.CharField(max_length=220)
     content = models.TextField(null=True, blank=True)
     price = models.DecimalField(max_digits=10,
