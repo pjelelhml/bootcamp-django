@@ -11,7 +11,12 @@ class ProductModelForm(forms.ModelForm):
         model = Product
         fields = [
             'title',
-            'content'
+            'content',
+            'image',
+            'media',
+        ]
+        exclude = [
+            'price'
         ]
 
     def clean_content(self):

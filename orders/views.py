@@ -1,11 +1,14 @@
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.http import Http404, HttpResponse
+from mimetypes import guess_type
 
 # Create your views here.
 from products.models import Product
 from .forms import OrderForm
 from .models import Order
+import pathlib
+from wsgiref.util import FileWrapper
 
 
 @login_required
@@ -48,3 +51,32 @@ def order_checkout_view(request):
         return redirect("/success")
 
     return render(request, 'orders/checkout.html', {"form": form, "object": order_obj})
+
+
+def download_order(request, *args, **kwargs):
+    '''
+    Download our order produce media,
+    if it exists.
+    '''
+
+    order_id = 'abc'
+    qs = Product.objects.filter(media__isnull=False)
+    project_obj = qs.first()
+    if not project_obj.media:
+        raise Http404
+    product_path = media.path
+    path = pathlib.Path(product_path)
+    pk = project_obj.pk
+    ext = path.suffix  # .csv .png .mov
+    fname = f"my-cool-product-{order_id}-{pk}{ext}"
+    if not path.exists():
+        raise Http404
+    with open(path, 'rb') as f:
+        wrapper = FileWrapper(f)
+        content_type = 'application/force-donwload'
+        guessed_ = guess_type(path)[0]
+        if guessed_:
+            content_type = guessed_
+        response = HttpResponse(wrapper, content_type=content_type)
+
+        return HttpResponse
