@@ -9,6 +9,19 @@ from products.forms import ProductModelForm
 # Create your views here.
 
 
+def featured_product_view(request, *args, **kwargs):
+
+    qs = Product.objects.filter(featured=True)
+    product = None
+    if qs.exists():
+        product = qs.first()
+    context = {
+        "product": product,
+        "form": None,
+    }
+    return render(request, "products/featured.html", context)
+
+
 # def bad_view(request, *kargs, **kwargs):
 #     print(request.GET)
 #     my_request_data = dict(request.GET)

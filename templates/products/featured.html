@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+
+
+{% block content %}
+{% if content %}
+
+<h1>{{ product.title }}</h1>
+{% if product.image %} {{ product.image }} {% endif %}
+<p>{{ product.description }}</p>
+
+
+
+{% else %}
+
+{% endif %}
+{% endblock content %}

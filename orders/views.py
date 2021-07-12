@@ -53,30 +53,36 @@ def order_checkout_view(request):
     return render(request, 'orders/checkout.html', {"form": form, "object": order_obj})
 
 
-def download_order(request, *args, **kwargs):
+def download_order(request, order_id=None, *args, **kwargs):
     '''
-    Download our order produce media,
+    Download our order product media,
     if it exists.
     '''
-
-    order_id = 'abc'
-    qs = Product.objects.filter(media__isnull=False)
-    project_obj = qs.first()
-    if not project_obj.media:
-        raise Http404
-    product_path = media.path
-    path = pathlib.Path(product_path)
-    pk = project_obj.pk
-    ext = path.suffix  # .csv .png .mov
+    if order_id == None:
+        return redirect("/orders")
+    qs = Order.objects.filter(
+        id=order_id, user=request.user, status='paid', product__media__isnull=False)
+    if not qs.exists():
+        return redirect("/orders")
+    order_obj = qs.first()
+    product_obj = order_obj.product
+    if not product_obj.media:
+        return redirect("/orders")
+    media = product_obj.media
+    product_path = media.path  # /abc/adsf/media/csadsf/adsf.csv
+    path = pathlib.Path(product_path)  # os.path
+    pk = product_obj.pk
+    ext = path.suffix  # .csv, .png, .mov
     fname = f"my-cool-product-{order_id}-{pk}{ext}"
     if not path.exists():
         raise Http404
     with open(path, 'rb') as f:
         wrapper = FileWrapper(f)
-        content_type = 'application/force-donwload'
+        content_type = 'application/force-download'
         guessed_ = guess_type(path)[0]
         if guessed_:
             content_type = guessed_
         response = HttpResponse(wrapper, content_type=content_type)
-
-        return HttpResponse
+        response['Content-Disposition'] = f"attachment;filename={fname}"
+        response['X-SendFile'] = f"{fname}"
+        return response
